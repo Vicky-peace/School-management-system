@@ -1,0 +1,76 @@
+create database School_System;
+
+-- Create Students Table
+CREATE TABLE Students (
+    StudentID INT IDENTITY(1,1) PRIMARY KEY,
+    Name VARCHAR(100),
+    Age INT,
+    Grade VARCHAR(10),
+    Address VARCHAR(255),
+    Contact VARCHAR(20)
+);
+
+-- Create Teachers Table
+CREATE TABLE Teachers (
+    TeacherID INT IDENTITY(1,1) PRIMARY KEY,
+    Name VARCHAR(100),
+    Age INT,
+    Subject VARCHAR(100)
+);
+
+-- Create Classes Table
+CREATE TABLE Classes (
+    ClassID INT IDENTITY(1,1) PRIMARY KEY,
+    ClassName VARCHAR(100),
+    Grade VARCHAR(10),
+    TeacherID INT,
+    FOREIGN KEY (TeacherID) REFERENCES Teachers(TeacherID)
+);
+
+-- Create Subjects Table
+CREATE TABLE Subjects (
+    SubjectID INT IDENTITY(1,1) PRIMARY KEY,
+    SubjectName VARCHAR(100)
+);
+
+-- Create Results Table
+CREATE TABLE Results (
+    ResultID INT IDENTITY(1,1) PRIMARY KEY,
+    StudentID INT,
+    SubjectID INT,
+    Marks INT,
+    ResultDate DATE DEFAULT GETDATE(), -- Auto-capture the current date
+    FOREIGN KEY (StudentID) REFERENCES Students(StudentID),
+    FOREIGN KEY (SubjectID) REFERENCES Subjects(SubjectID)
+);
+
+-- Create Fees Table
+CREATE TABLE Fees (
+    FeeID INT IDENTITY(1,1) PRIMARY KEY,
+    StudentID INT,
+    Amount DECIMAL(10,2),
+    Status VARCHAR(20),
+    FeeDate DATE DEFAULT GETDATE(), -- Auto-capture the current date
+    FOREIGN KEY (StudentID) REFERENCES Students(StudentID)
+);
+
+-- Create Attendance Table
+CREATE TABLE Attendance (
+    AttendanceID INT IDENTITY(1,1) PRIMARY KEY,
+    StudentID INT,
+    ClassID INT,
+    AttendanceDate DATE DEFAULT GETDATE(), -- Auto-capture the current date
+    Status VARCHAR(20),
+    FOREIGN KEY (StudentID) REFERENCES Students(StudentID),
+    FOREIGN KEY (ClassID) REFERENCES Classes(ClassID)
+);
+
+-- Create Exams Table
+CREATE TABLE Exams (
+    ExamID INT IDENTITY(1,1) PRIMARY KEY,
+    SubjectID INT,
+    ClassID INT,
+    ExamDate DATE DEFAULT GETDATE(), -- Auto-capture the current date
+    FOREIGN KEY (SubjectID) REFERENCES Subjects(SubjectID),
+    FOREIGN KEY (ClassID) REFERENCES Classes(ClassID)
+);
